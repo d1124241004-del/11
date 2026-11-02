@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDGs 5 性別平權網頁遊戲彙整平台</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- FontAwesome for fallback & rich icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sdg5: {
+              DEFAULT: '#FF3B21', // Official SDG 5 Red Color
+              hover: '#E02C14',
+              light: '#FF6B56',
+              bg: '#FFF0EE'
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'bounce-gentle': 'bounce 2s infinite',
+            'float': 'float 4s ease-in-out infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+    }
+
+    /* Glassmorphism utility */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .dark .glass-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .dark .glass-nav {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Gradient Background Text */
+    .text-gradient {
+      background: linear-gradient(135deg, #FF3B21 0%, #FF8A00 50%, #E91E63 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Smooth Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.5);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(107, 114, 128, 0.8);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- ==================== HEADER / NAV ==================== -->
+  <header class="sticky top-0 z-50 glass-nav border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showHome()">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sdg5 to-orange-400 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-sdg5/30 transform transition hover:scale-105">
+          ♀♂
+        </div>
+        <div>
+          <span class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+            SDGs 5 性別平權網頁遊戲
+          </span>
+          <span class="text-xs text-sdg5 font-bold uppercase tracking-widest hidden sm:block">Gender Equality Hub</span>
+        </div>
+      </div>
+
+      <!-- Navigation & Action Controls -->
+      <div class="flex items-center space-x-2 sm:space-x-4">
+        
+        <!-- Quick Nav Links (Desktop) -->
+        <nav class="hidden md:flex items-center space-x-1 bg-slate-100 dark:bg-slate-800/60 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700/50">
+          <button id="nav-home" onclick="showHome()" class="nav-btn active px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-white dark:bg-slate-700 text-sdg5 shadow-sm">
+            <i class="fa-solid fa-house mr-1.5"></i>關卡選單
+          </button>
+          <button id="nav-lvl1" onclick="loadGame('https://d1124241004-del.github.io/-/', 1)" class="nav-btn px-3.5 py-1.5 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-200">
+            第一關
+          </button>
+          <button id="nav-lvl2" onclick="loadGame('https://d1124241004-del.github.io/33/', 2)" class="nav-btn px-3.5 py-1.5 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-200">
+            第二關
+          </button>
+          <button id="nav-lvl3" onclick="loadGame('https://d1124241004-del.github.io/-2-/', 3)" class="nav-btn px-3.5 py-1.5 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-200">
+            第三關
+          </button>
+        </nav>
+
+        <!-- Quiz Trigger Button -->
+        <button onclick="openQuizModal()" class="p-2 rounded-xl bg-orange-500/10 text-orange-600 dark:text-orange-400 hover:bg-orange-500/20 transition-all font-semibold text-xs sm:text-sm flex items-center gap-1.5" title="知識快問快答">
+          <i class="fa-solid fa-lightbulb"></i>
+          <span class="hidden sm:inline">知識隨堂測验</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+          <i id="theme-icon-sun" class="fa-solid fa-sun hidden text-amber-400"></i>
+          <i id="theme-icon-moon" class="fa-solid fa-moon text-indigo-400"></i>
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 px-4 pt-2 pb-4 space-y-2">
+      <button onclick="showHome(); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-sdg5 flex items-center justify-between">
+        <span><i class="fa-solid fa-house mr-2"></i>關卡主頁選單</span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </button>
+      <button onclick="loadGame('https://d1124241004-del.github.io/-/', 1); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between">
+        <span><i class="fa-solid fa-seedling mr-2 text-emerald-500"></i>第一關：基礎挑戰</span>
+        <span id="mobile-check-1" class="text-xs font-bold text-emerald-500"></span>
+      </button>
+      <button onclick="loadGame('https://d1124241004-del.github.io/33/', 2); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between">
+        <span><i class="fa-solid fa-[#42e695] fa-puzzle-piece mr-2 text-sky-500"></i>第二關：情境解密</span>
+        <span id="mobile-check-2" class="text-xs font-bold text-sky-500"></span>
+      </button>
+      <button onclick="loadGame('https://d1124241004-del.github.io/-2-/', 3); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between">
+        <span><i class="fa-solid fa-trophy mr-2 text-purple-500"></i>第三關：進階考驗</span>
+        <span id="mobile-check-3" class="text-xs font-bold text-purple-500"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col">
+
+    <!-- HOME / CARD SELECTOR CONTAINER -->
+    <div id="home-container" class="space-y-8 animate-fade-in">
+      
+      <!-- Hero Banner -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sdg5 via-rose-500 to-orange-500 text-white p-6 sm:p-10 shadow-2xl shadow-sdg5/20">
+        <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+          <i class="fa-solid fa-venus-mars text-[240px]"></i>
+        </div>
+        <div class="relative z-10 max-w-2xl">
+          <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider mb-4 border border-white/30">
+            <i class="fa-solid fa-globe"></i> UN SDG 5 Goal
+          </div>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight mb-3">
+            SDGs 永續發展目標<br><span class="underline decoration-wavy decoration-orange-300">性別平權</span> 闖關體驗網
+          </h1>
+          <p class="text-rose-100 text-sm sm:text-base leading-relaxed mb-6 font-medium">
+            打破性別刻板印象，落實消除偏見！透過遊戲化互動體驗，從基礎觀念到生活情境應變，一同體驗性別平等的實踐價值。
+          </p>
+
+          <!-- Overall Progress Overview -->
+          <div class="bg-black/20 backdrop-blur-md p-4 rounded-2xl border border-white/20 max-w-md">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-rose-100">闖關總進度 (Overall Progress)</span>
+              <span id="overall-progress-text" class="text-sm font-black text-amber-300">0 / 3 完成</span>
+            </div>
+            <div class="w-full bg-white/30 h-3 rounded-full overflow-hidden p-0.5">
+              <div id="overall-progress-bar" class="bg-amber-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level Selection Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        
+        <!-- CARD 1 -->
+        <div class="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-300 relative group overflow-hidden border border-slate-200/80 dark:border-slate-800">
+          <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-400 to-amber-500"></div>
+          
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-orange-100 text-orange-600 dark:bg-orange-950/60 dark:text-orange-400 border border-orange-200 dark:border-orange-800/40">
+                LEVEL 1
+              </span>
+              <div id="badge-lvl1" class="hidden text-xs font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full flex items-center gap-1 border border-emerald-300/40">
+                <i class="fa-solid fa-circle-check"></i>已通關
+              </div>
+            </div>
+
+            <div class="w-14 h-14 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-seedling"></i>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-sdg5 transition-colors">
+              第一關：基礎挑戰
+            </h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+              進入第一關學習性別平權的基本觀念、打破性別刻板印象與基礎權益認知。
+            </p>
+          </div>
+
+          <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <button onclick="loadGame('https://d1124241004-del.github.io/-/', 1)" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-sdg5 to-orange-500 hover:from-sdg5-hover hover:to-orange-600 text-white shadow-lg shadow-sdg5/25 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+              <span>開始第一關</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button onclick="toggleCompleted(1)" class="w-full py-1.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors flex items-center justify-center gap-1">
+              <i class="fa-regular fa-square-check"></i> 標記/取消完成
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:shadow-xl hover:shadow-sky-500/10 hover:-translate-y-2 transition-all duration-300 relative group overflow-hidden border border-slate-200/80 dark:border-slate-800">
+          <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-teal-400 to-emerald-500"></div>
+          
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-teal-100 text-teal-600 dark:bg-teal-950/60 dark:text-teal-400 border border-teal-200 dark:border-teal-800/40">
+                LEVEL 2
+              </span>
+              <div id="badge-lvl2" class="hidden text-xs font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full flex items-center gap-1 border border-emerald-300/40">
+                <i class="fa-solid fa-circle-check"></i>已通關
+              </div>
+            </div>
+
+            <div class="w-14 h-14 rounded-2xl bg-teal-500/10 text-teal-500 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-puzzle-piece"></i>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-500 transition-colors">
+              第二關：情境解密
+            </h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+              深入日常生活與職場互動情境題挑戰，測試你的平權應變力與同理心。
+            </p>
+          </div>
+
+          <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <button onclick="loadGame('https://d1124241004-del.github.io/33/', 2)" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white shadow-lg shadow-teal-500/25 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+              <span>開始第二關</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button onclick="toggleCompleted(2)" class="w-full py-1.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors flex items-center justify-center gap-1">
+              <i class="fa-regular fa-square-check"></i> 標記/取消完成
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:shadow-xl hover:shadow-purple-500/10 hover:-translate-y-2 transition-all duration-300 relative group overflow-hidden border border-slate-200/80 dark:border-slate-800">
+          <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
+          
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-purple-100 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400 border border-purple-200 dark:border-purple-800/40">
+                LEVEL 3
+              </span>
+              <div id="badge-lvl3" class="hidden text-xs font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full flex items-center gap-1 border border-emerald-300/40">
+                <i class="fa-solid fa-circle-check"></i>已通關
+              </div>
+            </div>
+
+            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2 group-hover:text-purple-500 transition-colors">
+              第三關：進階考驗
+            </h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+              綜合知識與全球議題，挑戰高階情境判斷，充分發揮性別平權實踐力！
+            </p>
+          </div>
+
+          <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <button onclick="loadGame('https://d1124241004-del.github.io/-2-/', 3)" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white shadow-lg shadow-purple-500/25 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+              <span>開始第三關</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button onclick="toggleCompleted(3)" class="w-full py-1.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors flex items-center justify-center gap-1">
+              <i class="fa-regular fa-square-check"></i> 標記/取消完成
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SDG 5 Info Footer Box -->
+      <div class="glass-card rounded-2xl p-6 border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950/60 text-sdg5 flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-heart"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white text-base">永續發展目標 Goal 5：實現性別平等，增權所有婦女與女童</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">消除各種形式的性別歧視、職場薪資不平等與無酬照顧負擔。</p>
+          </div>
+        </div>
+        <button onclick="openQuizModal()" class="shrink-0 px-4 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl text-xs font-bold hover:bg-slate-800 transition">
+          測驗性別平等觀念
+        </button>
+      </div>
+
+    </div>
+
+    <!-- GAME IFRAME CONTAINER (Hidden by Default) -->
+    <div id="game-container" class="hidden flex-1 flex flex-col min-h-[75vh] rounded-3xl overflow-hidden glass-card border border-slate-200 dark:border-slate-800 shadow-2xl relative">
+      
+      <!-- Toolbar above iframe -->
+      <div class="bg-slate-100 dark:bg-slate-900/90 px-4 py-2.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        
+        <!-- Current Level Indicator -->
+        <div class="flex items-center space-x-3">
+          <button onclick="showHome()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>返回目錄</span>
+          </button>
+          <span class="h-4 w-px bg-slate-300 dark:bg-slate-700"></span>
+          <span id="current-game-title" class="font-bold text-sm text-slate-800 dark:text-slate-200 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            第一關：基礎挑戰
+          </span>
+        </div>
+
+        <!-- Utility Buttons -->
+        <div class="flex items-center space-x-2">
+          <!-- Mark Done Button -->
+          <button id="iframe-mark-btn" onclick="markCurrentCompleted()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-white hover:bg-emerald-600 transition flex items-center gap-1">
+            <i class="fa-solid fa-check"></i> 標記本關完成
+          </button>
+          
+          <!-- Reload iframe -->
+          <button onclick="reloadGame()" class="p-2 rounded-lg bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs transition" title="重新載入遊戲">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+
+          <!-- Fullscreen iframe -->
+          <button onclick="toggleFullscreen()" class="p-2 rounded-lg bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs transition" title="全螢幕模式">
+            <i class="fa-solid fa-expand"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading overlay -->
+      <div id="iframe-loader" class="absolute inset-0 top-11 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center transition-opacity duration-300">
+        <div class="w-12 h-12 border-4 border-sdg5 border-t-transparent rounded-full animate-spin mb-3"></div>
+        <p class="text-sm font-bold text-slate-600 dark:text-slate-300">正在安全加載遊戲關卡...</p>
+      </div>
+
+      <!-- Actual Game Viewport -->
+      <div class="flex-1 relative w-full h-full min-h-[600px]">
+        <iframe id="game-iframe" class="w-full h-full border-none absolute inset-0" title="SDGs Game Frame" allow="fullscreen"></iframe>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== QUIZ MODAL ==================== -->
+  <div id="quiz-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden p-4">
+    <div class="glass-card bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-800 relative animate-scale-up">
+      <button onclick="closeQuizModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-orange-500/10 text-sdg5 mx-auto flex items-center justify-center text-xl mb-3">
+          <i class="fa-solid fa-lightbulb"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white">SDG 5 性別平權快問快答</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">測試你對聯合國永續目標5的了解！</p>
+      </div>
+
+      <div id="quiz-content" class="space-y-4">
+        <!-- Question content rendered dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="py-6 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 mt-8">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <p>© SDGs Gender Equality Learning Platform. Designed for Education & Engagement.</p>
+      <div class="flex items-center space-x-4">
+        <a href="https://sdgs.un.org/goals/goal5" target="_blank" class="hover:text-sdg5 transition">UN SDG 5 Official</a>
+        <span>•</span>
+        <button onclick="resetProgress()" class="hover:text-rose-500 transition">重置個人闖關紀錄</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT INTERACTION LOGIC ==================== -->
+  <script>
+    // Audio Context synthesized sound effects
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function playSound(type) {
+      try {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'click') {
+          osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.05);
+          gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.05);
+        } else if (type === 'success') {
+          osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+          osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+          osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.35);
+        }
+      } catch (e) {
+        // Audio fallback
+      }
+    }
+
+    // State Variables
+    let activeLevel = 0;
+    const completedLevels = JSON.parse(localStorage.getItem('sdg5_completed_levels') || '[false, false, false]');
+
+    const levelData = [
+      { id: 1, title: '第一關：基礎挑戰', url: 'https://d1124241004-del.github.io/-/' },
+      { id: 2, title: '第二關：情境解密', url: 'https://d1124241004-del.github.io/33/' },
+      { id: 3, title: '第三關：進階考驗', url: 'https://d1124241004-del.github.io/-2-/' }
+    ];
+
+    // DOM Elements
+    const homeContainer = document.getElementById('home-container');
+    const gameContainer = document.getElementById('game-container');
+    const gameIframe = document.getElementById('game-iframe');
+    const iframeLoader = document.getElementById('iframe-loader');
+    const currentGameTitle = document.getElementById('current-game-title');
+    const navButtons = document.querySelectorAll('.nav-btn');
+
+    // Init Page
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      updateProgressUI();
+
+      // Iframe Load Handler
+      gameIframe.addEventListener('load', () => {
+        iframeLoader.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          iframeLoader.classList.add('hidden');
+        }, 300);
+      });
+    });
+
+    // Theme Management
+    function initTheme() {
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('theme-icon-sun').classList.remove('hidden');
+        document.getElementById('theme-icon-moon').classList.add('hidden');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('theme-icon-sun').classList.add('hidden');
+        document.getElementById('theme-icon-moon').classList.remove('hidden');
+      }
+    }
+
+    function toggleTheme() {
+      playSound('click');
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        document.getElementById('theme-icon-sun').classList.add('hidden');
+        document.getElementById('theme-icon-moon').classList.remove('hidden');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById('theme-icon-sun').classList.remove('hidden');
+        document.getElementById('theme-icon-moon').classList.add('hidden');
+      }
+    }
+
+    // Navigation & View Switches
+    function loadGame(url, levelNum) {
+      playSound('click');
+      activeLevel = levelNum;
+
+      // Update Nav state
+      navButtons.forEach(btn => {
+        btn.classList.remove('bg-white', 'dark:bg-slate-700', 'text-sdg5', 'shadow-sm');
+        btn.classList.add('text-slate-600', 'dark:text-slate-300');
+      });
+
+      const activeNavBtn = document.getElementById(`nav-lvl${levelNum}`);
+      if (activeNavBtn) {
+        activeNavBtn.classList.add('bg-white', 'dark:bg-slate-700', 'text-sdg5', 'shadow-sm');
+      }
+
+      // Show Iframe Container
+      homeContainer.classList.add('hidden');
+      gameContainer.classList.remove('hidden');
+
+      // Update Header Text
+      currentGameTitle.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> ${levelData[levelNum - 1].title}`;
+
+      // Reset and load iframe
+      iframeLoader.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+      gameIframe.src = url;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showHome() {
+      playSound('click');
+      activeLevel = 0;
+      gameContainer.classList.add('hidden');
+      homeContainer.classList.remove('hidden');
+      gameIframe.src = ''; // Clear iframe memory
+
+      // Update Active Nav Tab
+      navButtons.forEach(btn => {
+        btn.classList.remove('bg-white', 'dark:bg-slate-700', 'text-sdg5', 'shadow-sm');
+      });
+      document.getElementById('nav-home').classList.add('bg-white', 'dark:bg-slate-700', 'text-sdg5', 'shadow-sm');
+    }
+
+    function reloadGame() {
+      playSound('click');
+      if (activeLevel > 0) {
+        iframeLoader.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+        gameIframe.src = levelData[activeLevel - 1].url;
+      }
+    }
+
+    function toggleFullscreen() {
+      playSound('click');
+      if (!document.fullscreenElement) {
+        gameContainer.requestFullscreen().catch(err => alert(`無法進入全螢幕: ${err.message}`));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Progress & Completion Logic
+    function toggleCompleted(levelNum) {
+      playSound('click');
+      completedLevels[levelNum - 1] = !completedLevels[levelNum - 1];
+      if (completedLevels[levelNum - 1]) playSound('success');
+      saveProgress();
+    }
+
+    function markCurrentCompleted() {
+      if (activeLevel > 0) {
+        completedLevels[activeLevel - 1] = true;
+        playSound('success');
+        saveProgress();
+      }
+    }
+
+    function saveProgress() {
+      localStorage.setItem('sdg5_completed_levels', JSON.stringify(completedLevels));
+      updateProgressUI();
+    }
+
+    function resetProgress() {
+      if (confirm('確定要清空所有通關紀錄嗎？')) {
+        playSound('click');
+        completedLevels.fill(false);
+        saveProgress();
+      }
+    }
+
+    function updateProgressUI() {
+      let count = 0;
+      completedLevels.forEach((done, index) => {
+        const lvl = index + 1;
+        const badge = document.getElementById(`badge-lvl${lvl}`);
+        const mobileCheck = document.getElementById(`mobile-check-${lvl}`);
+
+        if (done) {
+          count++;
+          if (badge) badge.classList.remove('hidden');
+          if (mobileCheck) mobileCheck.textContent = '✓ 已完成';
+        } else {
+          if (badge) badge.classList.add('hidden');
+          if (mobileCheck) mobileCheck.textContent = '';
+        }
+      });
+
+      // Update Bar & Text
+      const percent = Math.round((count / 3) * 100);
+      document.getElementById('overall-progress-text').textContent = `${count} / 3 完成 (${percent}%)`;
+      document.getElementById('overall-progress-bar').style.width = `${percent}%`;
+    }
+
+    // SDG Quiz Feature
+    const quizQuestions = [
+      {
+        q: "聯合國永續發展目標 (SDGs) 中，第 5 項目標 (SDG 5) 的主要核心是什麼？",
+        options: ["優質教育", "性別平等與婦女賦權", "氣候行動", "良好健康與福祉"],
+        answer: 1,
+        explain: "SDG 5 的核心目標即為『實現性別平等，增權所有婦女與女童』。"
+      },
+      {
+        q: "下列何者屬於打破性別刻板印象的具體表現？",
+        options: [
+          "認為男性不適合擔任護理師",
+          "鼓勵任何人依興趣選擇職涯，不受性別限制",
+          "認為女性應承擔大部分的無酬家務作業",
+          "玩具分類嚴格分為男孩玩具與女孩玩具"
+        ],
+        answer: 1,
+        explain: "打破性別刻板印象即尊重個別差異，不以傳統性別角色框限個人的發展與選擇。"
+      }
+    ];
+
+    let currentQuizIndex = 0;
+
+    function openQuizModal() {
+      playSound('click');
+      currentQuizIndex = 0;
+      renderQuizQuestion();
+      document.getElementById('quiz-modal').classList.remove('hidden');
+    }
+
+    function closeQuizModal() {
+      playSound('click');
+      document.getElementById('quiz-modal').classList.add('hidden');
+    }
+
+    function renderQuizQuestion() {
+      const q = quizQuestions[currentQuizIndex];
+      const container = document.getElementById('quiz-content');
+
+      let optionsHTML = q.options.map((opt, i) => `
+        <button onclick="checkQuizAnswer(${i})" class="w-full text-left p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 font-semibold text-sm transition-all flex items-center justify-between group">
+          <span>${i + 1}. ${opt}</span>
+          <i class="fa-solid fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
+        </button>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="space-y-4">
+          <p class="font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base">${currentQuizIndex + 1}. ${q.q}</p>
+          <div class="space-y-2">${optionsHTML}</div>
+          <div id="quiz-feedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+        </div>
+      `;
+    }
+
+    function checkQuizAnswer(selectedOption) {
+      const q = quizQuestions[currentQuizIndex];
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.classList.remove('hidden');
+
+      if (selectedOption === q.answer) {
+        playSound('success');
+        feedback.className = "p-3 rounded-xl text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300/50";
+        feedback.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> 回答正確！${q.explain}`;
+
+        setTimeout(() => {
+          if (currentQuizIndex + 1 < quizQuestions.length) {
+            currentQuizIndex++;
+            renderQuizQuestion();
+          } else {
+            feedback.innerHTML += "<br>🎉 恭喜你完成了所有性別平權小測驗！";
+          }
+        }, 1800);
+
+      } else {
+        playSound('click');
+        feedback.className = "p-3 rounded-xl text-xs font-semibold bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-300/50";
+        feedback.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1"></i> 答案不完全正確，再思考看看喔！`;
+      }
+    }
+  </script>
+</body>
+</html>
